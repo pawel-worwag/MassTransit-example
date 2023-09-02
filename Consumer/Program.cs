@@ -1,7 +1,11 @@
 using Consumer.Infrastructure;
+using Consumer.Infrastructure.Messages;
 using MassTransit;
+using MassTransit.Transports.Fabric;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 builder.Services.AddOptions<RabbitMqTransportOptions>()
     .Configure(options =>
@@ -16,16 +20,14 @@ builder.Services.AddOptions<RabbitMqTransportOptions>()
 
 builder.Services.AddMassTransit(x =>
 {
-    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter(prefix: "Dev", includeNamespace: false));
-
-    x.AddConsumer<MessageConsumer>();
-    
+    x.AddConsumer<MessageConsumer>().Endpoint(e =>
+    {
+        e.Name = "messages";
+        e.ConfigureConsumeTopology = false;
+    });
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.ReceiveEndpoint("message-queue", e =>
-        {
-            e.ConfigureConsumer<MessageConsumer>(context);
-        });
+        cfg.ConfigureEndpoints(context);
     });
 });
 
