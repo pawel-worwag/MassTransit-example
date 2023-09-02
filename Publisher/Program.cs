@@ -20,10 +20,11 @@ builder.Services.AddMassTransit(x =>
 {
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Message<Message>(e =>
+        cfg.Message<Message>(x =>
         {
-            e.SetEntityName("message-exchange");
+            x.SetEntityName(builder.Configuration.GetValue<string>("Rabbit:MessageExchangeName","message-exchange")!);
         });
+        cfg.Publish<Message>(x => { x.ExchangeType = "topic"; });
 
     });
 });

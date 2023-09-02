@@ -22,7 +22,7 @@ builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<MessageConsumer>().Endpoint(e =>
     {
-        e.Name = "messages";
+        e.Name = builder.Configuration.GetValue<string>("Rabbit:MessageQueueName","messages")!;
         e.ConfigureConsumeTopology = false;
     });
     x.UsingRabbitMq((context, cfg) =>
