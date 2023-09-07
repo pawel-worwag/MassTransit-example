@@ -12,7 +12,12 @@ builder.Services.AddOptions<RabbitMqTransportOptions>()
         options.Pass = builder.Configuration.GetValue<string>("Rabbit:Pass");
         options.UseSsl = builder.Configuration.GetValue<bool>("Rabbit:UseSsl");
     });
-
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg)=>{
+        cfg.Message<Messages.WriteLog>(m => { });
+    });
+});
 var app = builder.Build();
 
 app.MapControllers();
