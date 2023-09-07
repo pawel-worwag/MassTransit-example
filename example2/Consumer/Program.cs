@@ -1,3 +1,4 @@
+using Consumer.Consumers;
 using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,10 +15,7 @@ builder.Services.AddOptions<RabbitMqTransportOptions>()
     });
 builder.Services.AddMassTransit(x =>
 {
-    x.AddConsumer<Consumer.Consumers.WriteLogConsumer>();
-    x.UsingRabbitMq((context, cfg)=>{
-        cfg.ConfigureEndpoints(context);
-    });
+    x.UsingRabbitMq();
 });
 
 var app = builder.Build();

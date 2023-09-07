@@ -15,10 +15,11 @@ public class SampleController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Sample1()
+    public async Task<IActionResult> Sample1()
     {
-        _bus.Send<Messages.WriteLog>(new (){ Severity = "INFO", Message = "Test123"});
-        
+        var uri = new Uri(_bus.Address,"write-log-exchange?type=topic");
+        var endpoint = await _bus.GetSendEndpoint(uri);
+        await endpoint.Send<Messages.WriteLog>(new() { Severity = "INFO", Message = "Test123" });
         return Ok();
     }
 }

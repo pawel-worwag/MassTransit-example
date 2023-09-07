@@ -15,7 +15,6 @@ builder.Services.AddOptions<RabbitMqTransportOptions>()
 builder.Services.AddMassTransit(x =>
 {
     x.UsingRabbitMq((context, cfg)=>{
-        cfg.Message<Messages.WriteLog>(m => { });
     });
 });
 var app = builder.Build();
