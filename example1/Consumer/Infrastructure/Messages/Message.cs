@@ -7,3 +7,4 @@ public record Message
 {
     public Guid Guid { get; init; }
 }
+
