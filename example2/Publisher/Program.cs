@@ -1,4 +1,5 @@
 using MassTransit;
+using Messages;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -14,7 +15,9 @@ builder.Services.AddOptions<RabbitMqTransportOptions>()
     });
 builder.Services.AddMassTransit(x =>
 {
-    x.UsingRabbitMq((context, cfg)=>{
+    x.UsingRabbitMq((context, cfg)=>
+    {
+        //cfg.Message<WriteLog>(configurator => { });
     });
 });
 var app = builder.Build();

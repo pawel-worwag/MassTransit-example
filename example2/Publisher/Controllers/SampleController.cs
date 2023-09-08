@@ -14,12 +14,27 @@ public class SampleController : ControllerBase
         _bus = bus;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Sample1()
+    [HttpGet("send")]
+    public async Task<IActionResult> Send()
     {
-        var uri = new Uri(_bus.Address,"write-log-exchange?type=topic");
-        var endpoint = await _bus.GetSendEndpoint(uri);
-        await endpoint.Send<Messages.WriteLog>(new() { Severity = "INFO", Message = "Test123" });
+        var sendEndpoint = await _bus.GetPublishSendEndpoint<Messages.SendMail>();
+        await sendEndpoint.Send<Messages.SendMail>(new()
+        {
+            Subject = "new user",
+            Recipients = new List<string>(){"user@example.com"},
+            Body = "Hello new user."
+        });
+        return Ok();
+    }
+    
+    [HttpGet("publish")]
+    public async Task<IActionResult> Publish()
+    {
+        await _bus.Publish<Messages.UserAdded>(new()
+        {
+            Email = "user@example.com",
+            Guid = Guid.NewGuid()
+        });
         return Ok();
     }
 }
