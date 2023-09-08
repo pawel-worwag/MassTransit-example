@@ -14,10 +14,15 @@ builder.Services.AddOptions<RabbitMqTransportOptions>()
         options.Pass = builder.Configuration.GetValue<string>("Rabbit:Pass");
         options.UseSsl = builder.Configuration.GetValue<bool>("Rabbit:UseSsl");
     });
+var instanceId = "-"+Guid.NewGuid().ToString();
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<SendMailConsumer>();
-    x.AddConsumer<UserAddedConsumer>();
+    x.AddConsumer<UserAddedConsumer>().Endpoint(c =>
+    {
+        c.InstanceId = instanceId;
+        c.Temporary = true;
+    });;
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.ConfigureEndpoints(context);
