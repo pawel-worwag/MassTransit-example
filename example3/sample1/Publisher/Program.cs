@@ -1,7 +1,7 @@
 using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddControllers();
 builder.Services.AddOptions<RabbitMqTransportOptions>()
     .Configure(options =>
     {
@@ -12,9 +12,15 @@ builder.Services.AddOptions<RabbitMqTransportOptions>()
         options.Pass = builder.Configuration.GetValue<string>("Rabbit:Pass");
         options.UseSsl = builder.Configuration.GetValue<bool>("Rabbit:UseSsl");
     });
-
+builder.Services.AddMassTransit(configuration =>
+{
+    configuration.UsingRabbitMq((context, cfg) =>
+    {
+    });
+});
 var app = builder.Build();
 
+app.MapControllers();
 app.MapGet("/", () => "Hello World!");
 
 app.Run();
