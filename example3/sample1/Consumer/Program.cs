@@ -1,4 +1,5 @@
 using MassTransit;
+using Consumers = Consumer.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,17 @@ builder.Services.AddOptions<RabbitMqTransportOptions>()
         options.Pass = builder.Configuration.GetValue<string>("Rabbit:Pass");
         options.UseSsl = builder.Configuration.GetValue<bool>("Rabbit:UseSsl");
     });
+
+builder.Services.AddMassTransit(configure =>
+{
+    configure.AddConsumer<Consumers.UserAddedConsumer>();
+    configure.AddConsumer<Consumers.UserUpdatedConsumer>();
+    configure.AddConsumer<Consumers.UserDisabledConsumer>();
+    configure.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 var app = builder.Build();
 

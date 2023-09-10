@@ -14,7 +14,7 @@ public class UserUpdatedConsumer : IConsumer<Messages.UserUpdated>
 
     public Task Consume(ConsumeContext<UserUpdated> context)
     {
-        _logger.LogInformation("[{timestamp}] UserUpdated:",
+        _logger.LogInformation("Updated:",
             DateTime.Now);
         return Task.CompletedTask;
     }
