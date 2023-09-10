@@ -3,11 +3,11 @@ using MassTransit;
 
 namespace Consumer.Consumers;
 
-public class UserDisabledConsumers : IConsumer<Messages.UserDisabled>
+public class UserDisabledConsumer : IConsumer<Messages.UserDisabled>
 {
     private readonly ILogger _logger;
 
-    public UserDisabledConsumers(ILogger<UserDisabledConsumers> logger)
+    public UserDisabledConsumer(ILogger<UserDisabledConsumer> logger)
     {
         _logger = logger;
     }
