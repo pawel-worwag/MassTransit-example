@@ -1,4 +1,5 @@
 using MassTransit;
+using Messages = Publisher.Messages;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -16,6 +17,9 @@ builder.Services.AddMassTransit(configuration =>
 {
     configuration.UsingRabbitMq((context, cfg) =>
     {
+        cfg.Message<Messages.UserAdded>(c => { c.SetEntityName("UserAdded"); });
+        cfg.Message<Messages.UserUpdated>(c => { c.SetEntityName("UserUpdated"); });
+        cfg.Message<Messages.UserDisabled>(c => { c.SetEntityName("UserDisabled"); });
     });
 });
 
