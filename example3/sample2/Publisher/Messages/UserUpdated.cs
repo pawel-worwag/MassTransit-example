@@ -1,6 +1,6 @@
+using MassTransit;
+
 namespace Publisher.Messages;
 
-public class UserUpdated
-{
-    
-}
+[MessageUrn("UserUpdated")]
+public record UserUpdated();
