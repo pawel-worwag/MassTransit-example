@@ -26,16 +26,16 @@ public class SampleController : ControllerBase
     [HttpGet("/s2")]
     public async Task<IActionResult> S2()
     {
-        await _bus.Publish<Messages.UserAdded>(new Messages.UserUpdated());
-        _logger.LogInformation("[{timestamp}] UserAdded",
+        await _bus.Publish<Messages.UserUpdated>(new Messages.UserUpdated());
+        _logger.LogInformation("[{timestamp}] UserUpdated",
             DateTime.Now);
         return Ok();
     }    
     [HttpGet("/s3")]
     public async Task<IActionResult> S3()
     {
-        await _bus.Publish<Messages.UserAdded>(new Messages.UserDisabled());
-        _logger.LogInformation("[{timestamp}] UserAdded",
+        await _bus.Publish<Messages.UserDisabled>(new Messages.UserDisabled());
+        _logger.LogInformation("[{timestamp}] UserDisabled",
             DateTime.Now);
         return Ok();
     }
