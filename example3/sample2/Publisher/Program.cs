@@ -1,7 +1,7 @@
 using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddControllers();
 builder.Services.AddOptions<RabbitMqTransportOptions>()
     .Configure(options =>
     {
@@ -15,6 +15,7 @@ builder.Services.AddOptions<RabbitMqTransportOptions>()
 
 var app = builder.Build();
 
+app.MapControllers();
 app.MapGet("/", () => "Hello World!");
 
 app.Run();
